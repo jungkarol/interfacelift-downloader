@@ -6,13 +6,11 @@ require 'fileutils'
 
 class Image < Struct.new(:url, :file_name); end
 
-@images = []
-
 @agent = Mechanize.new
-@page
 @page_number = 0
 
 def find_and_save_images( new_page )
+  @images = []
   @page_number += 1
   puts "Strona numer: " + @page_number.to_s
 
@@ -39,7 +37,6 @@ def find_and_save_images( new_page )
   rescue Exception => e
     puts "No i klops :( jedziemy dalej\n #{e.message}"
   end
-  @images = []
 end
 
 def go_to_the_next_page
@@ -59,7 +56,6 @@ if !directory_exists?("images")
   ap "Utworzono katalog images"
 end
 
-agent = Mechanize.new
 find_and_save_images( 'http://interfacelift.com/wallpaper/downloads/date/widescreen/2880x1800' ) #MacBook Pro with Retina
 # find_and_save_images( 'https://interfacelift.com/wallpaper/downloads/date/widescreen/1920x1200/' ) #Full HD
 49.times do
