@@ -4,9 +4,14 @@ require 'mechanize'
 require 'net/http'
 require 'fileutils'
 
+class Image < Struct.new(:url, :file_name); end
+
+@images = []
+
 @agent = Mechanize.new
 @page
 @page_number = 0
+
 def find_and_save_images( new_page )
   @page_number += 1
   puts "Strona numer: " + @page_number.to_s
@@ -19,19 +24,22 @@ def find_and_save_images( new_page )
       links.push 'http://interfacelift.com' + attribute[1].value
     end
   end
-
+  begin
   links.each do |link|
     image_name = link.split('/').last
-    puts "\t"+image_name
+    image = Image.new(link.to_s, image_name.to_s)
+    @images << image
+    puts "\t"+image.file_name()
     open(link) {|f|
        File.open('images/'+image_name,"wb") do |file|
          file.puts f.read
        end
     }
   end
-
-  rescue
-    puts "No i klops :( jedziemy dalej"
+  rescue Exception => e
+    puts "No i klops :( jedziemy dalej\n #{e.message}"
+  end
+  @images = []
 end
 
 def go_to_the_next_page
@@ -44,9 +52,11 @@ def directory_exists?(directory)
   File.directory?(directory)
 end
 
+# --------------------------------
 
 if !directory_exists?("images")
   Dir.mkdir 'images'
+  ap "Utworzono katalog images"
 end
 
 agent = Mechanize.new
