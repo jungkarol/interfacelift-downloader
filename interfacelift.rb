@@ -2,6 +2,7 @@ require 'awesome_print'
 require 'open-uri'
 require 'mechanize'
 require 'net/http'
+require 'fileutils'
 
 @agent = Mechanize.new
 @page
@@ -9,6 +10,7 @@ require 'net/http'
 def find_and_save_images( new_page )
   @page_number += 1
   puts "Strona numer: " + @page_number.to_s
+
   @page = @agent.get new_page
   elements = @page.search("//div[@class='download']/div/a")
   links =[]
@@ -38,9 +40,18 @@ def go_to_the_next_page
   next_page
 end
 
+def directory_exists?(directory)
+  File.directory?(directory)
+end
+
+
+if !directory_exists?("images")
+  Dir.mkdir 'images'
+end
+
 agent = Mechanize.new
-#find_and_save_images( 'http://interfacelift.com/wallpaper/downloads/date/widescreen/2880x1800' ) #MacBook Pro with Retina
-find_and_save_images( 'https://interfacelift.com/wallpaper/downloads/date/widescreen/1920x1200/' ) #Full HD
+find_and_save_images( 'http://interfacelift.com/wallpaper/downloads/date/widescreen/2880x1800' ) #MacBook Pro with Retina
+# find_and_save_images( 'https://interfacelift.com/wallpaper/downloads/date/widescreen/1920x1200/' ) #Full HD
 49.times do
   find_and_save_images( go_to_the_next_page )
 end
