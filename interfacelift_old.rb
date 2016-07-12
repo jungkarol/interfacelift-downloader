@@ -66,7 +66,6 @@ class InterfaceliftDownloader
     end
     ap "Pobieranie zakończono pomyślnie"
   end
-
 end
 
 # --------------------------------
