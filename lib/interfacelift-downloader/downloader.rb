@@ -58,4 +58,21 @@ class InterfaceliftDownloader
     end
     ap "Pobieranie zakończono pomyślnie"
   end
+
+  def run(parameters)
+    if(parameters.size % 2 == 0)
+      if(parameters.first == '-p')
+        download_images(parameters[1])
+      else
+        puts "Podano błędny parametr\nUżyj -help aby zobaczyć pomoc"
+      end
+    else
+      parameters.each do |parameter|
+        if(parameter == '-help')
+          puts "Dostępne parametry to:\n-help\t\t\twyświetla pomoc\n-p <liczba stron>\tilość stron do pobrania\n-r <rozdzielczość>\ttapety w konkretnej rozdzielczości"
+          break
+        end
+      end
+    end
+  end
 end

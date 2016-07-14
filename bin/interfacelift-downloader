@@ -4,4 +4,4 @@ $:.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib')))
 
 require 'interfacelift-downloader'
 
-InterfaceliftDownloader.new().download_images(ARGV.first)
+InterfaceliftDownloader.new().run(ARGV)
